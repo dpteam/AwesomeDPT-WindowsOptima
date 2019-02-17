@@ -129,10 +129,12 @@ Function DisableAppSuggestions {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEverEnabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-310093Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-314559Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338387Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 0
@@ -161,8 +163,10 @@ Function EnableAppSuggestions {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 1
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-310093Enabled" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-314559Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338387Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -ErrorAction SilentlyContinue
 }
@@ -941,6 +945,22 @@ Function EnableUpdateRestart {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUPowerManagement" -ErrorAction SilentlyContinue
 }
 
+# Disable Windows Update automatic downloads
+# Note: This doesn't disable the need for updates but rather tries to ensure that downloading updates is done manually for Non-Active Directory environments.
+Function DisableUpdateAutoDownload {
+	Write-Output "Disabling Windows Update automatic downloads..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -Type DWord -Value 2
+}
+
+# Enable Windows Update automatic downloads
+Function EnableUpdateAutoDownload {
+	Write-Output "Enabling Windows Update automatic downloads..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU" -Name "AUOptions" -ErrorAction SilentlyContinue
+}
+
 # Stop and disable Home Groups services - Not applicable since 1803. Not applicable to Server
 Function DisableHomeGroups {
 	Write-Output "Stopping and disabling Home Groups services..."
@@ -1322,6 +1342,21 @@ Function HideShutdownFromLockScreen {
 Function ShowShutdownOnLockScreen {
 	Write-Output "Showing shutdown options on Lock Screen..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ShutdownWithoutLogon" -Type DWord -Value 1
+}
+
+# Disable Lock screen Blur 1903+
+Function DisableLockScreenBlur {
+	Write-Output "Disabling Lock screen Blur..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "DisableAcrylicBackgroundOnLogon" -Type DWord -Value 1
+}
+
+# Enable Lock screen Blur 1903+
+Function EnableLockScreenBlur {
+	Write-Output "Enabling Lock screen Blur..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "DisableAcrylicBackgroundOnLogon" -ErrorAction SilentlyContinue
 }
 
 # Disable Aero Shake (minimizing other windows when one is dragged by mouse and shaken)
@@ -1798,6 +1833,18 @@ Function EnableChangingSoundScheme {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name "NoChangingSoundScheme" -ErrorAction SilentlyContinue
 }
 
+# Enable VerboseStatus 
+Function EnableVerboseStatus {
+	Write-Output "Enabling VerboseStatus..."
+	New-ItemProperty -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'VerboseStatus' -Value '1' -PropertyType DWORD -Force
+}
+
+# Disable VerboseStatus
+Function DisableVerboseStatus {
+	Write-Output "Disabling VerboseStatus..."
+	New-ItemProperty -Path 'HKLM:\Software\Microsoft\Windows\CurrentVersion\Policies\System' -Name 'VerboseStatus' -Value '0' -PropertyType DWORD -Force
+}
+
 ##########
 #endregion UI Tweaks
 ##########
@@ -1807,6 +1854,18 @@ Function EnableChangingSoundScheme {
 ##########
 #region Explorer UI Tweaks
 ##########
+
+# Display the full path in the title bar
+Function DisplayFullPath {
+    Write-Output "Displaying the full path in the title bar..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 1
+}
+
+# Don't display the full path in the title bar
+Function DontDisplayFullPath {
+    Write-Output "Not displaying the full path in the title bar..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
+}
 
 # Show known file extensions
 Function ShowKnownExtensions {
@@ -1832,6 +1891,42 @@ Function HideHiddenFiles {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "Hidden" -Type DWord -Value 2
 }
 
+# Show protected operating system files
+Function ShowSuperHidden {
+    Write-Output "Showing protected operating system files..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 1
+}
+
+# Hide protected operating system files
+Function HideSuperHidden {
+    Write-Output "Hiding protected operating system files..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 0
+}
+
+# Show empty drives
+Function ShowDrivesWithNoMedia {
+    Write-Output "Showing empty drives..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideDrivesWithNoMedia" -Type DWord -Value 0
+}
+
+# Hide empty drives
+Function HideDrivesWithNoMedia {
+    Write-Output "Hiding empty drives..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideDrivesWithNoMedia" -Type DWord -Value 1
+}
+
+# Show merge conflicts
+Function ShowMergeConflicts {
+    Write-Output "Showing merge conflicts..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts" -Type DWord -Value 0
+}
+
+# Hide merge conflicts
+Function HideMergeConflicts {
+    Write-Output "Hiding merge conflicts..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts" -Type DWord -Value 1
+}
+
 # Enable navigation pane expanding to current folder
 Function EnableNavPaneExpand {
 	Write-Output "Enabling navigation pane expanding to current folder..."
@@ -1842,6 +1937,18 @@ Function EnableNavPaneExpand {
 Function DisableNavPaneExpand {
 	Write-Output "Disabling navigation pane expanding to current folder..."
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneExpandToCurrentFolder" -ErrorAction SilentlyContinue
+}
+
+# Show all folders in navigation pane
+Function NavPaneShowAllFolders {
+    Write-Output "Showing all folders in navigation pane..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneShowAllFolders" -Type DWord -Value 1
+}
+
+# Hide some folders in navigation pane
+Function NavPaneHideSomeFolders {
+    Write-Output "Hiding some folders in navigation pane..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneShowAllFolders" -Type DWord -Value 0
 }
 
 # Enable launching folder windows in a separate process
@@ -1866,6 +1973,18 @@ Function EnableRestoreFldrWindows {
 Function DisableRestoreFldrWindows {
 	Write-Output "Disabling restoring previous folder windows at logon..."
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "PersistBrowsers" -ErrorAction SilentlyContinue
+}
+
+# Color encrypted or compressed files
+Function ColorEncryptCompressed {
+    Write-Output "Coloring encrypted or compressed files..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowEncryptCompressedColor" -Type DWord -Value 1
+}
+
+# Don't color encrypted or compressed files
+Function DontColorEncryptCompressed {
+    Write-Output "Not coloring encrypted or compressed files..."
+    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowEncryptCompressedColor" -Type DWord -Value 0
 }
 
 # Disable Sharing Wizard
@@ -2399,6 +2518,7 @@ Function UninstallMsftBloat {
 	Get-AppxPackage "Microsoft.BingWeather" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.CommsPhone" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.ConnectivityStore" | Remove-AppxPackage
+	Get-AppxPackage "Microsoft.FreshPaint" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.GetHelp" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Getstarted" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.Messaging" | Remove-AppxPackage
@@ -2448,6 +2568,7 @@ Function InstallMsftBloat {
 	Get-AppxPackage -AllUsers "Microsoft.BingWeather" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.CommsPhone" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.ConnectivityStore" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
+	Get-AppxPackage -AllUsers "Microsoft.FreshPaint" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.GetHelp" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.Getstarted" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.Messaging" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
@@ -2693,6 +2814,21 @@ Function DisableIEFirstRun {
 Function EnableIEFirstRun {
 	Write-Output "Disabling Internet Explorer first run wizard..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -ErrorAction SilentlyContinue
+}
+
+# Disable "Hi!" First Logon Animation (it will be replaced by "Preparing Windows" message)
+Function DisableFirstLogonAnimation {
+    Write-Output "Disabling First Logon Animation..."
+ If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System")) {
+		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableFirstLogonAnimation" -Type DWord -Value 0
+}
+
+# Enable "Hi!" First Logon Animation
+Function EnableFirstLogonAnimation {
+    Write-Output "Enabling First Logon Animation..."
+    Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableFirstLogonAnimation" -ErrorAction SilentlyContinue
 }
 
 # Uninstall Windows Media Player

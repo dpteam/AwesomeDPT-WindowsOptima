@@ -160,13 +160,13 @@ Function EnableAppSuggestions {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SilentInstalledAppsEnabled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338388Enabled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338389Enabled" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353696Enabled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SystemPaneSuggestionsEnabled" -Type DWord -Value 1
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-310093Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-314559Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338387Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-338393Enabled" -ErrorAction SilentlyContinue
-	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353694Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "SubscribedContent-353698Enabled" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -ErrorAction SilentlyContinue
 }
@@ -204,6 +204,23 @@ Function EnableBackgroundApps {
 		Remove-ItemProperty -Path $_.PsPath -Name "Disabled" -ErrorAction SilentlyContinue
 		Remove-ItemProperty -Path $_.PsPath -Name "DisabledByUser" -ErrorAction SilentlyContinue
 	}
+}
+
+# Disable location feature and scripting for the location feature
+Function DisableLocation {
+	Write-Output "Disabling location services..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableLocation" -Type DWord -Value 1
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableLocationScripting" -Type DWord -Value 1
+}
+
+# Enable location feature and scripting for the location feature
+Function EnableLocation {
+	Write-Output "Enabling location services..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableLocation" -ErrorAction SilentlyContinue
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableLocationScripting" -ErrorAction SilentlyContinue
 }
 
 # Disable Location Tracking
@@ -336,6 +353,36 @@ Function EnableCortana {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 0
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name "AllowCortana" -ErrorAction SilentlyContinue
+}
+
+# Disable biometric features in Windows. Note - it's recommended to create a password recovery disk, if you log on using biometrics.
+Function DisableBiometrics {
+	Write-Output "Disabling biometric services..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Biometrics")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Biometrics" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Biometrics" -Name "Enabled" -Type DWord -Value 0
+}
+
+# Enable biometric features
+Function EnableBiometrics {
+	Write-Output "Enabling biometric services..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Biometrics" -Name "Enabled" -ErrorAction SilentlyContinue
+}
+
+# Disable use of camera devices
+Function DisableCamera {
+	Write-Output "Disabling camera devices..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera" -Name "AllowCamera" -Type DWord -Value 0
+}
+
+# Enable use of camera devices
+Function EnableCamera {
+	Write-Output "Enabling camera devices..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera" -Name "AllowCamera" -ErrorAction SilentlyContinue
 }
 
 # Disable Error reporting
@@ -1359,6 +1406,21 @@ Function EnableLockScreenBlur {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "DisableAcrylicBackgroundOnLogon" -ErrorAction SilentlyContinue
 }
 
+# Disable sensor features, such as screen auto rotation
+Function DisableSensors {
+	Write-Output "Disabling sensors..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableSensors" -Type DWord -Value 1
+}
+
+# Enable sensor features
+Function EnableSensors {
+	Write-Output "Enabling sensors..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableSensors" -ErrorAction SilentlyContinue
+}
+
 # Disable Aero Shake (minimizing other windows when one is dragged by mouse and shaken)
 Function DisableAeroShake {
 	Write-Output "Disabling Aero Shake..."
@@ -1381,6 +1443,54 @@ Function DisableStickyKeys {
 Function EnableStickyKeys {
 	Write-Output "Enabling Sticky keys prompt..."
 	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\StickyKeys" -Name "Flags" -Type String -Value "510"
+}
+
+# Disable Toggle keys prompt
+Function DisableToggleKeys {
+	Write-Output "Disabling Toggle keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name "Flags" -Type String -Value "58"
+}
+
+# Enable Toggle keys prompt
+Function EnableToggleKeys {
+	Write-Output "Enabling Toggle keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name "Flags" -Type String -Value "62"
+}
+
+# Disable Filter keys prompt
+Function DisableFilterKeys {
+	Write-Output "Disabling Filter keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name "Flags" -Type String -Value "122"
+}
+
+# Enable Filter keys prompt
+Function EnableFilterKeys {
+	Write-Output "Enabling Filter keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name "Flags" -Type String -Value "126"
+}
+
+# Disable Toggle keys prompt
+Function DisableToggleKeys {
+	Write-Output "Disabling Toggle keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name "Flags" -Type String -Value "58"
+}
+
+# Enable Toggle keys prompt
+Function EnableToggleKeys {
+	Write-Output "Enabling Toggle keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\ToggleKeys" -Name "Flags" -Type String -Value "62"
+}
+
+# Disable Filter keys prompt
+Function DisableFilterKeys {
+	Write-Output "Disabling Filter keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name "Flags" -Type String -Value "122"
+}
+
+# Enable Filter keys prompt
+Function EnableFilterKeys {
+	Write-Output "Enabling Filter keys prompt..."
+	Set-ItemProperty -Path "HKCU:\Control Panel\Accessibility\Keyboard Response" -Name "Flags" -Type String -Value "126"
 }
 
 # Show Task Manager details - Applicable since 1607
@@ -1857,14 +1967,14 @@ Function DisableVerboseStatus {
 
 # Display the full path in the title bar
 Function DisplayFullPath {
-    Write-Output "Displaying the full path in the title bar..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 1
+	Write-Output "Displaying the full path in the title bar..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 1
 }
 
 # Don't display the full path in the title bar
 Function DontDisplayFullPath {
-    Write-Output "Not displaying the full path in the title bar..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
+	Write-Output "Not displaying the full path in the title bar..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
 }
 
 # Show known file extensions
@@ -1893,38 +2003,38 @@ Function HideHiddenFiles {
 
 # Show protected operating system files
 Function ShowSuperHidden {
-    Write-Output "Showing protected operating system files..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 1
+	Write-Output "Showing protected operating system files..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 1
 }
 
 # Hide protected operating system files
 Function HideSuperHidden {
-    Write-Output "Hiding protected operating system files..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 0
+	Write-Output "Hiding protected operating system files..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowSuperHidden" -Type DWord -Value 0
 }
 
 # Show empty drives
 Function ShowDrivesWithNoMedia {
-    Write-Output "Showing empty drives..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideDrivesWithNoMedia" -Type DWord -Value 0
+	Write-Output "Showing empty drives..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideDrivesWithNoMedia" -Type DWord -Value 0
 }
 
 # Hide empty drives
 Function HideDrivesWithNoMedia {
-    Write-Output "Hiding empty drives..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideDrivesWithNoMedia" -Type DWord -Value 1
+	Write-Output "Hiding empty drives..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideDrivesWithNoMedia" -Type DWord -Value 1
 }
 
 # Show merge conflicts
 Function ShowMergeConflicts {
-    Write-Output "Showing merge conflicts..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts" -Type DWord -Value 0
+	Write-Output "Showing merge conflicts..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts" -Type DWord -Value 0
 }
 
 # Hide merge conflicts
 Function HideMergeConflicts {
-    Write-Output "Hiding merge conflicts..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts" -Type DWord -Value 1
+	Write-Output "Hiding merge conflicts..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "HideMergeConflicts" -Type DWord -Value 1
 }
 
 # Enable navigation pane expanding to current folder
@@ -1941,14 +2051,14 @@ Function DisableNavPaneExpand {
 
 # Show all folders in navigation pane
 Function NavPaneShowAllFolders {
-    Write-Output "Showing all folders in navigation pane..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneShowAllFolders" -Type DWord -Value 1
+	Write-Output "Showing all folders in navigation pane..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneShowAllFolders" -Type DWord -Value 1
 }
 
 # Hide some folders in navigation pane
 Function NavPaneHideSomeFolders {
-    Write-Output "Hiding some folders in navigation pane..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneShowAllFolders" -Type DWord -Value 0
+	Write-Output "Hiding some folders in navigation pane..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "NavPaneShowAllFolders" -Type DWord -Value 0
 }
 
 # Enable launching folder windows in a separate process
@@ -1977,14 +2087,14 @@ Function DisableRestoreFldrWindows {
 
 # Color encrypted or compressed files
 Function ColorEncryptCompressed {
-    Write-Output "Coloring encrypted or compressed files..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowEncryptCompressedColor" -Type DWord -Value 1
+	Write-Output "Coloring encrypted or compressed files..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowEncryptCompressedColor" -Type DWord -Value 1
 }
 
 # Don't color encrypted or compressed files
 Function DontColorEncryptCompressed {
-    Write-Output "Not coloring encrypted or compressed files..."
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowEncryptCompressedColor" -Type DWord -Value 0
+	Write-Output "Not coloring encrypted or compressed files..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowEncryptCompressedColor" -Type DWord -Value 0
 }
 
 # Disable Sharing Wizard
@@ -2818,8 +2928,8 @@ Function EnableIEFirstRun {
 
 # Disable "Hi!" First Logon Animation (it will be replaced by "Preparing Windows" message)
 Function DisableFirstLogonAnimation {
-    Write-Output "Disabling First Logon Animation..."
- If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System")) {
+	Write-Output "Disabling First Logon Animation..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Force | Out-Null
 	}
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableFirstLogonAnimation" -Type DWord -Value 0
@@ -2827,8 +2937,23 @@ Function DisableFirstLogonAnimation {
 
 # Enable "Hi!" First Logon Animation
 Function EnableFirstLogonAnimation {
-    Write-Output "Enabling First Logon Animation..."
-    Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableFirstLogonAnimation" -ErrorAction SilentlyContinue
+	Write-Output "Enabling First Logon Animation..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableFirstLogonAnimation" -ErrorAction SilentlyContinue
+}
+
+# Disable Windows Media Player's media sharing feature
+Function DisableMediaSharing {
+	Write-Output "Disabling media sharing..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer")) {
+		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer" -Force | Out-Null
+	}
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer" -Name "PreventLibrarySharing" -Type DWord -Value 1
+}
+
+# Enable Windows Media Player's media sharing feature
+Function EnableMediaSharing {
+	Write-Output "Enabling media sharing..."
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer" -Name "PreventLibrarySharing" -ErrorAction SilentlyContinue
 }
 
 # Uninstall Windows Media Player

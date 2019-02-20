@@ -86,6 +86,7 @@ DisableAutorun                  # EnableAutorun
 # DisableSleepTimeout           # EnableSleepTimeout
 # DisableFastStartup            # EnableFastStartup
 # DisableAutoRebootOnCrash      # EnableAutoRebootOnCrash
+SetDNStoCloudFlareReserved      # SetDNStoCloudFlareDefault
 
 ### UI Tweaks ###
 DisableActionCenter             # EnableActionCenter

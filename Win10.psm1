@@ -609,6 +609,18 @@ Function EnableLLMNR {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name "EnableMulticast" -ErrorAction SilentlyContinue
 }
 
+# Set DNS Client Server Addresses to CloudFlare [Default IPs]
+Function SetDNStoCloudFlareDefault {
+	Write-Output "Setting DNS Client Server Addresses to CloudFlare [Default IPs]..."
+	Get-NetAdapter -Physical | Set-DnsClientServerAddress -ServerAddresses 1.1.1.1,1.0.0.1,2606:4700:4700::1111,2606:4700:4700::1001
+}
+
+# Set DNS Client Server Addresses to CloudFlare [Reserved IPs]
+Function SetDNStoCloudFlareReserved {
+	Write-Output "Setting DNS Client Server Addresses to CloudFlare [Reserved IPs]..."
+	Get-NetAdapter -Physical | Set-DnsClientServerAddress -ServerAddresses 1.0.0.1,1.1.1.1,2606:4700:4700::1001,2606:4700:4700::1111
+}
+
 # Disable Network Connectivity Status Indicator active test
 # Note: This may reduce the ability of OS and other components to determine internet access, however protects against a specific type of zero-click attack.
 # See https://github.com/Disassembler0/Win10-Initial-Setup-Script/pull/111 for details

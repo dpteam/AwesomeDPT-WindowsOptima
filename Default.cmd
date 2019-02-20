@@ -1,4 +1,7 @@
 @echo off
+SetLocal EnableExtensions EnableDelayedExpansion
+color 0B
+title Win10-Initial-Setup-Script Initialization...
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Win10.ps1" -include "%~dp0Win10.psm1" -preset "%~dpn0.preset"
 
 rem The following variant redirects output also to a file

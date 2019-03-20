@@ -86,7 +86,8 @@ DisableAutorun                  # EnableAutorun
 # DisableSleepTimeout           # EnableSleepTimeout
 # DisableFastStartup            # EnableFastStartup
 # DisableAutoRebootOnCrash      # EnableAutoRebootOnCrash
-SetDNStoCloudFlareReserved      # SetDNStoCloudFlareDefault
+SetDNStoCloudFlareReserved      # SetDNStoCloudFlareDefault     # SetDNStoDefault
+DisableReservedStorage          # EnableReservedStorage
 
 ### UI Tweaks ###
 DisableActionCenter             # EnableActionCenter
@@ -124,7 +125,10 @@ SetVisualFXPerformance          # SetVisualFXAppearance
 # SetSoundSchemeNone            # SetSoundSchemeDefault
 # DisableStartupSound           # EnableStartupSound
 # DisableChangingSoundScheme    # EnableChangingSoundScheme
-EnableVerboseStatus             # DisableVerboseStatus
+# EnableVerboseStatus           # DisableVerboseStatus
+# DisableF1HelpKey              # EnableF1HelpKey
+# DisableFirstLogonAnimation    # EnableFirstLogonAnimation
+DisableLockScreenBlur           # EnableLockScreenBlur
 
 ### Explorer UI Tweaks ###
 # DisplayFullPath               # DontDisplayFullPath

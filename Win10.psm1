@@ -2682,7 +2682,7 @@ Function UninstallOneDrive {
 	If (!(Test-Path $onedrive)) {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
 	}
-	if(![System.IO.File]::Exists($onedrive)){
+	if([System.IO.File]::Exists($onedrive)){
 		Start-Process -FilePath $onedrive -ArgumentList "/uninstall" -NoNewWindow -Wait
 	}
 	Start-Sleep -s 2

@@ -2683,7 +2683,7 @@ Function UninstallOneDrive {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
 	}
 	if(![System.IO.File]::Exists($onedrive)){
-		Start-Process $onedrive -ArgumentList "/uninstall" -NoNewWindow -Wait
+		Start-Process -FilePath $onedrive -ArgumentList "/uninstall" -NoNewWindow -Wait
 	}
 	Start-Sleep -s 2
 	Stop-Process -Name "explorer" -Force -ErrorAction SilentlyContinue
@@ -2706,7 +2706,7 @@ Function InstallOneDrive {
 	If (!(Test-Path $onedrive)) {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
 	}
-	Start-Process $onedrive -NoNewWindow
+	Start-Process -FilePath $onedrive -NoNewWindow
 }
 
 # Uninstall default Microsoft applications

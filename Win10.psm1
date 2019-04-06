@@ -2658,6 +2658,18 @@ Function DisableFullPathTitleBar {
 #region Application Tweaks
 ##########
 
+# Disable DirectPlay
+Function DisableDirectPlay {
+	Write-Output "Disabling DirectPlay..."
+	Disable-WindowsOptionalFeature -Online -FeatureName "DirectPlay"
+}
+
+# Enable DirectPlay
+Function EnableDirectPlay {
+	Write-Output "Enabling DirectPlay..."
+	Enable-WindowsOptionalFeature -Online -FeatureName "DirectPlay" -All
+}
+
 # Disable OneDrive
 Function DisableOneDrive {
 	Write-Output "Disabling OneDrive..."

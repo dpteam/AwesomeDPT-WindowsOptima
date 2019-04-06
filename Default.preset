@@ -199,6 +199,7 @@ AddPhotoViewerOpenWith          # RemovePhotoViewerOpenWith
 UninstallXPSPrinter             # InstallXPSPrinter
 RemoveFaxPrinter                # AddFaxPrinter
 # UninstallFaxAndScan           # InstallFaxAndScan
+EnableDirectPlay				# DisableDirectPlay
 
 ### Server Specific Tweaks ###
 # HideServerManagerOnLogin      # ShowServerManagerOnLogin

@@ -1,6 +1,11 @@
 # <img src="https://raw.githubusercontent.com/dpteam/AwesomeDPT-WindowsSoft/master/content/logo.png?raw=true" width="400">
 
-💻 PowerShell script for automation of routine tasks done after fresh installations of Windows 10 / Server 2016 / Server 2019
+💻 PowerShell script for automation of routine tasks done after fresh installations of Windows 10, Server 2016 & Server 2019
+
+## Ссылки
+
+- [AwesomeDPT-WindowsSoft](https://dpteam.github.io/AwesomeDPT-WindowsSoft) - Список программного обеспечения, которое DartPower Team советует установить каждому.
+- [AwesomeDPT-WindowsOptima](https://dpteam.github.io/AwesomeDPT-WindowsOptima) - Скрипт, написанный на Powershell, для того чтобы отключить нежелетельные стандарты Windows, такие как: телеметрия (слежка), UWP приложения, лишние службы и настройки. Включает ряд особенностей, которые гарантированно повышают общую производительность операционной системы.
 
 ## Contents
  - [Description](#description)

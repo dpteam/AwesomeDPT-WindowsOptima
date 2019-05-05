@@ -1387,6 +1387,18 @@ Function EnableReservedStorage {
 	Set-ItemProperty -LiteralPath "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\ReserveManager" -Name "ShippedWithReserves" -Value 1 -Type DWord -ErrorAction SilentlyContinue
 }
 
+# Enable Long Paths
+Function EnableLongPaths {
+	Write-Output "Enabling Long Paths..."
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Type DWord -Value 1
+}
+
+# Disable Long Paths
+Function DisableLongPaths {
+	Write-Output "Disabling Long Paths..."
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Type DWord -Value 0
+}
+
 ##########
 #endregion Service Tweaks
 ##########

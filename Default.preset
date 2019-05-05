@@ -89,6 +89,7 @@ DisableAutorun                  # EnableAutorun
 # DisableAutoRebootOnCrash      # EnableAutoRebootOnCrash
 SetDNStoCloudFlareReserved      # SetDNStoCloudFlareDefault     # SetDNStoDefault
 DisableReservedStorage          # EnableReservedStorage
+EnableLongPaths                 # DisableLongPaths
 
 ### UI Tweaks ###
 DisableActionCenter             # EnableActionCenter

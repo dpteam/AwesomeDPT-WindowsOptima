@@ -1,7 +1,17 @@
 @echo off
+title AwesomeDPT-WindowsOptima Kernel Initialization...
+:predefines
 SetLocal EnableExtensions EnableDelayedExpansion
+chcp 1251
 color 0B
-title Win10-Initial-Setup-Script Initialization...
+cls
+title AwesomeDPT-WindowsOptima
+:logo
+type Logo.ascii
+pause>nul
+cls
+title AwesomeDPT-WindowsOptima Working...
+:executing
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Win10.ps1" -include "%~dp0Win10.psm1" -preset "%~dpn0.preset"
 
 rem The following variant redirects output also to a file

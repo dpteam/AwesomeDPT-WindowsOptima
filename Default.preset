@@ -76,7 +76,7 @@ DisableAutoplay                 # EnableAutoplay
 DisableAutorun                  # EnableAutorun
 DisableRestorePoints			# EnableRestorePoints
 EnableStorageSense				# DisableStorageSense
-EnableDefragmentation			# DisableDefragmentation
+DisableDefragmentation			# EnableDefragmentation
 EnableSuperfetch				# DisableSuperfetch
 DisableIndexing					# EnableIndexing
 EnableSwapFile					# DisableSwapFile

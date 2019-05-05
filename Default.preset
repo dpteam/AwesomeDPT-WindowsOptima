@@ -209,7 +209,7 @@ HideServerManagerOnLogin      # ShowServerManagerOnLogin
 DisableShutdownTracker        # EnableShutdownTracker
 DisablePasswordPolicy         # EnablePasswordPolicy
 DisableCtrlAltDelLogin        # EnableCtrlAltDelLogin
-DisableIEEnhancedSecurity     # EnableIEEnhancedSecurity
+# DisableIEEnhancedSecurity   # EnableIEEnhancedSecurity
 EnableAudio                   # DisableAudio
 
 ### Unpinning ###

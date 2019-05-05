@@ -2660,6 +2660,18 @@ Function DisableFullPathTitleBar {
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
 }
 
+# Enable Clipboard History
+Function EnableClipboardHistory {
+	Write-Output "Enabling Clipboard History..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1
+}
+
+# Disable Clipboard History
+Function DisableClipboardHistory {
+	Write-Output "Disabling Clipboard History..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 0
+}
+
 ##########
 #endregion Explorer UI Tweaks
 ##########
@@ -2669,18 +2681,6 @@ Function DisableFullPathTitleBar {
 ##########
 #region Application Tweaks
 ##########
-
-# Disable DirectPlay
-Function DisableDirectPlay {
-	Write-Output "Disabling DirectPlay..."
-	Disable-WindowsOptionalFeature -Online -FeatureName "DirectPlay"
-}
-
-# Enable DirectPlay
-Function EnableDirectPlay {
-	Write-Output "Enabling DirectPlay..."
-	Enable-WindowsOptionalFeature -Online -FeatureName "DirectPlay" -All
-}
 
 # Disable OneDrive
 Function DisableOneDrive {
@@ -3322,6 +3322,36 @@ Function UninstallFaxAndScan {
 Function InstallFaxAndScan {
 	Write-Output "Installing Windows Fax and Scan Services..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "FaxServicesClientPackage" -NoRestart -WarningAction SilentlyContinue | Out-Null
+}
+
+# Disable DirectPlay
+Function DisableDirectPlay {
+	Write-Output "Disabling DirectPlay..."
+	Disable-WindowsOptionalFeature -Online -FeatureName "DirectPlay"
+}
+
+# Enable DirectPlay
+Function EnableDirectPlay {
+	Write-Output "Enabling DirectPlay..."
+	Enable-WindowsOptionalFeature -Online -FeatureName "DirectPlay" -All
+}
+
+# Set IE Start Page to badbrowser page
+Function SetIEStartPageToBadBrowser {
+	Write-Output "Setting IE Start Page to badbrowser page..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "https://dpteam.github.io/badbrowser/"
+}
+
+# Set IE Start Page to about:blank
+Function SetIEStartPageToAboutBlank {
+	Write-Output "Setting IE Start Page to blank page..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "about:blank"
+}
+
+# Set IE Start Page to about:Tabs
+Function SetIEStartPageToAboutTabs {
+	Write-Output "Setting IE Start Page to tabs page..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "about:Tabs"
 }
 
 ##########

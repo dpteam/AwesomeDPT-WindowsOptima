@@ -16,7 +16,7 @@
 # In such case, enable telemetry, run Windows update and then disable telemetry again.
 # See also https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/57 and https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/92
 Function DisableTelemetry {
-	Write-Output "Отключение Телеметрии [отслеживания]..."
+	Write-Output "Отключение основных функций слежки [Телеметрии]..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
@@ -59,7 +59,7 @@ Function DisableTelemetry {
 
 # Enable Telemetry
 Function EnableTelemetry {
-	Write-Output "Включение Телеметрии [отслеживания]..."
+	Write-Output "Включение основных функций слежки [Телеметрии]..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -ErrorAction SilentlyContinue
@@ -81,7 +81,7 @@ Function EnableTelemetry {
 
 # Disable Wi-Fi Sense
 Function DisableWiFiSense {
-	Write-Output "Отключение отслеживания за Wi-Fi..."
+	Write-Output "Отключение технологии Wi-Fi Sense..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
 	}
@@ -99,7 +99,7 @@ Function DisableWiFiSense {
 
 # Enable Wi-Fi Sense
 Function EnableWiFiSense {
-	Write-Output "Включение отслеживания за Wi-Fi..."
+	Write-Output "Включение технологии Wi-Fi Sense..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
 	}
@@ -150,7 +150,7 @@ Function EnableWebSearch {
 
 # Disable Application suggestions and automatic installation
 Function DisableAppSuggestions {
-	Write-Output "Отключение рекламных предложений и их автоустановку..."
+	Write-Output "Отключение рекламных предложений программ и их автоустановку..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 0
@@ -180,7 +180,7 @@ Function DisableAppSuggestions {
 
 # Enable Application suggestions and automatic installation
 Function EnableAppSuggestions {
-	Write-Output "Включение рекламных предложений и их автоустановку..."
+	Write-Output "Включение рекламных предложений программ и их автоустановку..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "ContentDeliveryAllowed" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "OemPreInstalledAppsEnabled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager" -Name "PreInstalledAppsEnabled" -Type DWord -Value 1
@@ -413,7 +413,7 @@ Function EnableBiometrics {
 
 # Disable use of camera devices
 Function DisableCamera {
-	Write-Output "Отключение возможности использования устройств с камерой..."
+	Write-Output "Отключение возможности использования камеры..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera" -Force | Out-Null
 	}
@@ -422,7 +422,7 @@ Function DisableCamera {
 
 # Enable use of camera devices
 Function EnableCamera {
-	Write-Output "Включение возможности использования устройств с камерой..."
+	Write-Output "Включение возможности использования камеры..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Camera" -Name "AllowCamera" -ErrorAction SilentlyContinue
 }
 
@@ -676,7 +676,7 @@ Function SetDNStoCloudFlareDefault {
 
 # Set DNS Client Server Addresses to CloudFlare [Reserved IPs]
 Function SetDNStoCloudFlareReserved {
-	Write-Output "Переключение конфигурации DNS серверов на публичные от CloudFlare [Резеврные IP-адреса]..."
+	Write-Output "Переключение конфигурации DNS серверов на публичные от CloudFlare [Резервные IP-адреса]..."
 	Get-NetAdapter -Physical | Set-DnsClientServerAddress -ServerAddresses 1.0.0.1,1.1.1.1,2606:4700:4700::1001,2606:4700:4700::1111
 }
 
@@ -767,7 +767,7 @@ Function HideDefenderTrayIcon {
 
 # Show Windows Defender SysTray icon
 Function ShowDefenderTrayIcon {
-	Write-Output "Отображение значка Защитника Windows в трее..."
+	Write-Output "Раскрытие значка Защитника Windows в трее..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender Security Center\Systray" -Name "HideSystray" -ErrorAction SilentlyContinue
 	If ([System.Environment]::OSVersion.Version.Build -eq 14393) {
 		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run" -Name "WindowsDefender" -Type ExpandString -Value "`"%ProgramFiles%\Windows Defender\MSASCuiL.exe`""
@@ -873,7 +873,7 @@ Function HideAccountProtectionWarn {
 
 # Show Account Protection warning in Defender
 Function ShowAccountProtectionWarn {
-	Write-Output "Отображение предупреждения о защите аккаунта..."
+	Write-Output "Раскрытие предупреждения о защите аккаунта..."
 	Remove-ItemProperty "HKCU:\Software\Microsoft\Windows Security Health\State" -Name "AccountProtection_MicrosoftAccount_Disconnected" -ErrorAction SilentlyContinue
 }
 
@@ -1472,7 +1472,7 @@ Function HideNetworkFromLockScreen {
 
 # Show network options on lock screen
 Function ShowNetworkOnLockScreen {
-	Write-Output "Отображение параметров сети на экране блокировки..."
+	Write-Output "Раскрытие параметров сети на экране блокировки..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\System" -Name "DontDisplayNetworkSelectionUI" -ErrorAction SilentlyContinue
 }
 
@@ -1484,7 +1484,7 @@ Function HideShutdownFromLockScreen {
 
 # Show shutdown options on lock screen
 Function ShowShutdownOnLockScreen {
-	Write-Output "Отображение параметров выключения на экране блокировки..."
+	Write-Output "Раскрытие параметров выключения на экране блокировки..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ShutdownWithoutLogon" -Type DWord -Value 1
 }
 
@@ -1597,7 +1597,7 @@ Function HideTaskManagerDetails {
 
 # Show file operations details
 Function ShowFileOperationsDetails {
-	Write-Output "Отображение деталей файловых операций..."
+	Write-Output "Раскрытие деталей файловых операций..."
 	If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager")) {
 		New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\OperationStatusManager" | Out-Null
 	}
@@ -1633,13 +1633,13 @@ Function HideTaskbarSearch {
 
 # Show Taskbar Search icon
 Function ShowTaskbarSearchIcon {
-	Write-Output "Отображение значка поиска на панели задач..."
+	Write-Output "Раскрытие значка поиска на панели задач..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 1
 }
 
 # Show Taskbar Search box
 Function ShowTaskbarSearchBox {
-	Write-Output "Отображение поля поиска на панели задач..."
+	Write-Output "Раскрытие поля поиска на панели задач..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Search" -Name "SearchboxTaskbarMode" -Type DWord -Value 2
 }
 
@@ -1651,7 +1651,7 @@ Function HideTaskView {
 
 # Show Task View button
 Function ShowTaskView {
-	Write-Output "Отображение кнопки просмотра задач..."
+	Write-Output "Раскрытие кнопки просмотра задач..."
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ShowTaskViewButton" -ErrorAction SilentlyContinue
 }
 
@@ -1687,7 +1687,7 @@ Function SetTaskbarCombineAlways {
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarGlomLevel" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "MMTaskbarGlomLevel" -ErrorAction SilentlyContinue
 }
-
+# WORKER
 # Hide Taskbar People icon
 Function HideTaskbarPeopleIcon {
 	Write-Output "Hiding People icon..."
@@ -2525,10 +2525,10 @@ Function Show3DObjectsInThisPC {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\MyComputer\NameSpace\{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" | Out-Null
 	}
 }
-
+# WORKER
 # Hide 3D Objects icon from Explorer namespace - Hides the icon also from personal folders and open/save dialogs
 Function Hide3DObjectsFromExplorer {
-	Write-Output "Hiding 3D Objects icon from Explorer namespace..."
+	Write-Output "Скрытие значка 3D-объектов в пространстве имен проводника..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force | Out-Null
 	}
@@ -2541,14 +2541,14 @@ Function Hide3DObjectsFromExplorer {
 
 # Show 3D Objects icon in Explorer namespace
 Function Show3DObjectsInExplorer {
-	Write-Output "Showing 3D Objects icon in Explorer namespace..."
+	Write-Output "Раскрытие значка 3D-объектов в пространстве имен проводника..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name "ThisPCPolicy" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name "ThisPCPolicy" -ErrorAction SilentlyContinue
 }
 
 # Hide 'Include in library' context menu item
 Function HideIncludeInLibraryMenu {
-	Write-Output "Hiding 'Include in library' context menu item..."
+	Write-Output "Скрытие пункта контекстного меню 'Добавить в библиотеку'..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name "HKCR" -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" | Out-Null
 	}
@@ -2557,7 +2557,7 @@ Function HideIncludeInLibraryMenu {
 
 # Show 'Include in library' context menu item
 Function ShowIncludeInLibraryMenu {
-	Write-Output "Showing 'Include in library' context menu item..."
+	Write-Output "Раскрытие пункта контекстного меню 'Добавить в библиотеку'..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name "HKCR" -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" | Out-Null
 	}
@@ -2567,7 +2567,7 @@ Function ShowIncludeInLibraryMenu {
 
 # Hide 'Give access to' (until 1703 'Share With') context menu item.
 Function HideGiveAccessToMenu {
-	Write-Output "Hiding 'Give access to' context menu item..."
+	Write-Output "Скрытие пункта контекстного меню 'Предоставить доступ'..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name "HKCR" -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" | Out-Null
 	}
@@ -2580,7 +2580,7 @@ Function HideGiveAccessToMenu {
 
 # Show 'Give access to' (until 1703 'Share With') context menu item.
 Function ShowGiveAccessToMenu {
-	Write-Output "Showing 'Give access to' context menu item..."
+	Write-Output "Раскрытие пункта контекстного меню 'Предоставить доступ'..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name "HKCR" -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" | Out-Null
 	}
@@ -2596,7 +2596,7 @@ Function ShowGiveAccessToMenu {
 
 # Hide 'Share' context menu item. Applicable since 1709
 Function HideShareMenu {
-	Write-Output "Hiding 'Share' context menu item..."
+	Write-Output "Скрытие пункта контекстного меню 'Поделиться'..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name "HKCR" -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" | Out-Null
 	}
@@ -2605,7 +2605,7 @@ Function HideShareMenu {
 
 # Show 'Share' context menu item. Applicable since 1709
 Function ShowShareMenu {
-	Write-Output "Showing 'Share' context menu item..."
+	Write-Output "Раскрытие пункта контекстного меню 'Поделиться'..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name "HKCR" -PSProvider "Registry" -Root "HKEY_CLASSES_ROOT" | Out-Null
 	}
@@ -2615,61 +2615,61 @@ Function ShowShareMenu {
 
 # Disable thumbnails, show only file extension icons
 Function DisableThumbnails {
-	Write-Output "Отключение thumbnails..."
+	Write-Output "Отключение эскизов..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "IconsOnly" -Type DWord -Value 1
 }
 
 # Enable thumbnails
 Function EnableThumbnails {
-	Write-Output "Включение thumbnails..."
+	Write-Output "Включение эскизов..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "IconsOnly" -Type DWord -Value 0
 }
 
 # Disable creation of thumbnail cache files
 Function DisableThumbnailCache {
-	Write-Output "Отключение creation of thumbnail cache files..."
+	Write-Output "Отключение создания кэша эскизов..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisableThumbnailCache" -Type DWord -Value 1
 }
 
 # Enable creation of thumbnail cache files
 Function EnableThumbnailCache {
-	Write-Output "Включение creation of thumbnail cache files..."
+	Write-Output "Включение создания кэша эскизов..."
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisableThumbnailCache" -ErrorAction SilentlyContinue
 }
 
 # Disable creation of Thumbs.db thumbnail cache files on network folders
 Function DisableThumbsDBOnNetwork {
-	Write-Output "Отключение creation of Thumbs.db on network folders..."
+	Write-Output "Отключение создания Thumbs.db на сетевых папках..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisableThumbsDBOnNetworkFolders" -Type DWord -Value 1
 }
 
 # Enable creation of Thumbs.db thumbnail cache files on network folders
 Function EnableThumbsDBOnNetwork {
-	Write-Output "Включение creation of Thumbs.db on network folders..."
+	Write-Output "Включение создания Thumbs.db на сетевых папках..."
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisableThumbsDBOnNetworkFolders" -ErrorAction SilentlyContinue
 }
 
 # Enable the full path in the title bar
 Function EnableFullPathTitleBar {
-	Write-Output "Включение the full path in the title bar..."
+	Write-Output "Включение отображения полного пути в строке заголовка..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 1
 }
 
 # Disable the full path in the title bar
 Function DisableFullPathTitleBar {
-	Write-Output "Отключение the full path in the title bar..."
+	Write-Output "Отключение отображения полного пути в строке заголовка..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
 }
 
 # Enable Clipboard History
 Function EnableClipboardHistory {
-	Write-Output "Включение Clipboard History..."
+	Write-Output "Включение истории буфера обмена..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1
 }
 
 # Disable Clipboard History
 Function DisableClipboardHistory {
-	Write-Output "Отключение Clipboard History..."
+	Write-Output "Отключение истории буфера обмена..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 0
 }
 
@@ -2700,7 +2700,7 @@ Function EnableOneDrive {
 
 # Uninstall OneDrive - Not applicable to Server
 Function UninstallOneDrive {
-	Write-Output "Uninstalling OneDrive..."
+	Write-Output "Удаление OneDrive..."
 	Stop-Process -Name "OneDrive" -Force -ErrorAction SilentlyContinue
 	Start-Sleep -s 2
 	$onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
@@ -2726,7 +2726,7 @@ Function UninstallOneDrive {
 
 # Install OneDrive - Not applicable to Server
 Function InstallOneDrive {
-	Write-Output "Installing OneDrive..."
+	Write-Output "Установка OneDrive..."
 	$onedrive = "$env:SYSTEMROOT\SysWOW64\OneDriveSetup.exe"
 	If (!(Test-Path $onedrive)) {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
@@ -2736,7 +2736,7 @@ Function InstallOneDrive {
 
 # Uninstall default Microsoft applications
 Function UninstallMsftBloat {
-	Write-Output "Uninstalling default Microsoft applications..."
+	Write-Output "Удаление стандартных приложений Microsoft..."
 	Get-AppxPackage "Microsoft.3DBuilder" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.AppConnector" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.BingFinance" | Remove-AppxPackage
@@ -2798,7 +2798,7 @@ Function UninstallMsftBloat {
 
 # Install default Microsoft applications
 Function InstallMsftBloat {
-	Write-Output "Installing default Microsoft applications..."
+	Write-Output "Установка приложений Microsoft по умолчанию..."
 	Get-AppxPackage -AllUsers "Microsoft.3DBuilder" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.AppConnector" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.BingFinance" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
@@ -2866,7 +2866,7 @@ Function InstallMsftBloat {
 
 # Uninstall default third party applications
 function UninstallThirdPartyBloat {
-	Write-Output "Uninstalling default third party applications..."
+	Write-Output "Удаление сторонних приложений по умолчанию..."
 	Get-AppxPackage "2414FC7A.Viber" | Remove-AppxPackage
 	Get-AppxPackage "41038Axilesoft.ACGMediaPlayer" | Remove-AppxPackage
 	Get-AppxPackage "46928bounde.EclipseManager" | Remove-AppxPackage
@@ -2916,7 +2916,7 @@ function UninstallThirdPartyBloat {
 
 # Install default third party applications
 Function InstallThirdPartyBloat {
-	Write-Output "Installing default third party applications..."
+	Write-Output "Установка сторонних приложений по умолчанию..."
 	Get-AppxPackage -AllUsers "2414FC7A.Viber" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "41038Axilesoft.ACGMediaPlayer" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "46928bounde.EclipseManager" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
@@ -2966,21 +2966,21 @@ Function InstallThirdPartyBloat {
 
 # Uninstall Windows Store
 Function UninstallWindowsStore {
-	Write-Output "Uninstalling Windows Store..."
+	Write-Output "Удаление Магазина Windows..."
 	Get-AppxPackage "Microsoft.DesktopAppInstaller" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.WindowsStore" | Remove-AppxPackage
 }
 
 # Install Windows Store
 Function InstallWindowsStore {
-	Write-Output "Installing Windows Store..."
+	Write-Output "Установка Магазина Windows..."
 	Get-AppxPackage -AllUsers "Microsoft.DesktopAppInstaller" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.WindowsStore" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 }
 
 # Disable Xbox features - Not applicable to Server
 Function DisableXboxFeatures {
-	Write-Output "Отключение Xbox features..."
+	Write-Output "Отключение функций Xbox..."
 	Get-AppxPackage "Microsoft.XboxApp" | Remove-AppxPackage
 	Get-AppxPackage "Microsoft.XboxIdentityProvider" | Remove-AppxPackage -ErrorAction SilentlyContinue
 	Get-AppxPackage "Microsoft.XboxSpeechToTextOverlay" | Remove-AppxPackage
@@ -2997,7 +2997,7 @@ Function DisableXboxFeatures {
 
 # Enable Xbox features - Not applicable to Server
 Function EnableXboxFeatures {
-	Write-Output "Включение Xbox features..."
+	Write-Output "Включение функций Xbox..."
 	Get-AppxPackage -AllUsers "Microsoft.XboxApp" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.XboxIdentityProvider" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
 	Get-AppxPackage -AllUsers "Microsoft.XboxSpeechToTextOverlay" | ForEach-Object {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
@@ -3011,7 +3011,7 @@ Function EnableXboxFeatures {
 
 # Disable built-in Adobe Flash in IE and Edge
 Function DisableAdobeFlash {
-	Write-Output "Отключение built-in Adobe Flash in IE and Edge..."
+	Write-Output "Отключение встроенного Adobe Flash в IE и Edge..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer" -Force | Out-Null
 	}
@@ -3024,14 +3024,14 @@ Function DisableAdobeFlash {
 
 # Enable built-in Adobe Flash in IE and Edge
 Function EnableAdobeFlash {
-	Write-Output "Включение built-in Adobe Flash in IE and Edge..."
+	Write-Output "Включение встроенного Adobe Flash в IE и Edge.."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer" -Name "DisableFlashInIE" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Addons" -Name "FlashPlayerEnabled" -ErrorAction SilentlyContinue
 }
 
 # Disable Edge preload after Windows startup - Applicable since Win10 1809
 Function DisableEdgePreload {
-	Write-Output "Отключение Edge preload..."
+	Write-Output "Отключение фоновой работы браузера Edge..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main" -Force | Out-Null
 	}
@@ -3044,26 +3044,26 @@ Function DisableEdgePreload {
 
 # Enable Edge preload after Windows startup
 Function EnableEdgePreload {
-	Write-Output "Включение Edge preload..."
+	Write-Output "Включение фоновой работы браузера Edge..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\Main" -Name "AllowPrelaunch" -ErrorAction SilentlyContinue
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\MicrosoftEdge\TabPreloader" -Name "AllowTabPreloading" -ErrorAction SilentlyContinue
 }
 
 # Disable Edge desktop shortcut creation after certain Windows updates are applied
 Function DisableEdgeShortcutCreation {
-	Write-Output "Отключение Edge shortcut creation..."
+	Write-Output "Отключение создания ярлыка браузера Edge в новых профилях на рабочем столе..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "DisableEdgeDesktopShortcutCreation" -Type DWord -Value 1
 }
 
 # Enable Edge desktop shortcut creation after certain Windows updates are applied
 Function EnableEdgeShortcutCreation {
-	Write-Output "Включение Edge shortcut creation..."
+	Write-Output "Включение создания ярлыка браузера Edge в новых профилях на рабочем столе..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer" -Name "DisableEdgeDesktopShortcutCreation" -ErrorAction SilentlyContinue
 }
 
 # Disable Internet Explorer first run wizard
 Function DisableIEFirstRun {
-	Write-Output "Отключение Internet Explorer first run wizard..."
+	Write-Output "Отключение мастера первого запуска Internet Explorer..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main" -Force | Out-Null
 	}
@@ -3072,13 +3072,13 @@ Function DisableIEFirstRun {
 
 # Enable Internet Explorer first run wizard
 Function EnableIEFirstRun {
-	Write-Output "Отключение Internet Explorer first run wizard..."
+	Write-Output "Включение мастера первого запуска Internet Explorer..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Internet Explorer\Main" -Name "DisableFirstRunCustomize" -ErrorAction SilentlyContinue
 }
 
 # Disable "Hi!" First Logon Animation (it will be replaced by "Preparing Windows" message)
 Function DisableFirstLogonAnimation {
-	Write-Output "Отключение First Logon Animation..."
+	Write-Output "Отключение анимации первого входа..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Force | Out-Null
 	}
@@ -3087,13 +3087,13 @@ Function DisableFirstLogonAnimation {
 
 # Enable "Hi!" First Logon Animation
 Function EnableFirstLogonAnimation {
-	Write-Output "Включение First Logon Animation..."
+	Write-Output "Включение анимации первого входа..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "EnableFirstLogonAnimation" -ErrorAction SilentlyContinue
 }
 
 # Disable Windows Media Player's media sharing feature
 Function DisableMediaSharing {
-	Write-Output "Отключение media sharing..."
+	Write-Output "Отключение общего доступа к файлам мультимедиа..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer" -Force | Out-Null
 	}
@@ -3102,43 +3102,43 @@ Function DisableMediaSharing {
 
 # Enable Windows Media Player's media sharing feature
 Function EnableMediaSharing {
-	Write-Output "Включение media sharing..."
+	Write-Output "Включение общего доступа к файлам мультимедиа..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsMediaPlayer" -Name "PreventLibrarySharing" -ErrorAction SilentlyContinue
 }
 
 # Uninstall Windows Media Player
 Function UninstallMediaPlayer {
-	Write-Output "Uninstalling Windows Media Player..."
+	Write-Output "Удаление Windows Media Player..."
 	Disable-WindowsOptionalFeature -Online -FeatureName "WindowsMediaPlayer" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Install Windows Media Player
 Function InstallMediaPlayer {
-	Write-Output "Installing Windows Media Player..."
+	Write-Output "Установка Windows Media Player..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "WindowsMediaPlayer" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Uninstall Internet Explorer
 Function UninstallInternetExplorer {
-	Write-Output "Uninstalling Internet Explorer..."
+	Write-Output "Удаление Internet Explorer..."
 	Disable-WindowsOptionalFeature -Online -FeatureName "Internet-Explorer-Optional-$env:PROCESSOR_ARCHITECTURE" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Install Internet Explorer
 Function InstallInternetExplorer {
-	Write-Output "Installing Internet Explorer..."
+	Write-Output "Установка Internet Explorer..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "Internet-Explorer-Optional-$env:PROCESSOR_ARCHITECTURE" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Uninstall Work Folders Client - Not applicable to Server
 Function UninstallWorkFolders {
-	Write-Output "Uninstalling Work Folders Client..."
+	Write-Output "Удаление службы Клиент рабочих папок..."
 	Disable-WindowsOptionalFeature -Online -FeatureName "WorkFolders-Client" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Install Work Folders Client - Not applicable to Server
 Function InstallWorkFolders {
-	Write-Output "Installing Work Folders Client..."
+	Write-Output "Установка службы Клиент рабочих папок..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "WorkFolders-Client" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
@@ -3146,7 +3146,7 @@ Function InstallWorkFolders {
 # PowerShell 2.0 is deprecated since September 2018. This doesn't affect PowerShell 5 or newer which is the default PowerShell environment.
 # May affect Microsoft Diagnostic Tool and possibly other scripts. See https://blogs.msdn.microsoft.com/powershell/2017/08/24/windows-powershell-2-0-deprecation/
 Function UninstallPowerShellV2 {
-	Write-Output "Uninstalling PowerShell 2.0 Environment..."
+	Write-Output "Удаление среды PowerShell 2.0..."
 	If ((Get-CimInstance -Class "Win32_OperatingSystem").ProductType -eq 1) {
 		Disable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowerShellV2Root" -NoRestart -WarningAction SilentlyContinue | Out-Null
 	} Else {
@@ -3156,7 +3156,7 @@ Function UninstallPowerShellV2 {
 
 # Install PowerShell 2.0 Environment
 Function InstallPowerShellV2 {
-	Write-Output "Installing PowerShell 2.0 Environment..."
+	Write-Output "Установка среды PowerShell 2.0..."
 	If ((Get-CimInstance -Class "Win32_OperatingSystem").ProductType -eq 1) {
 		Enable-WindowsOptionalFeature -Online -FeatureName "MicrosoftWindowsPowerShellV2Root" -NoRestart -WarningAction SilentlyContinue | Out-Null
 	} Else {
@@ -3167,7 +3167,7 @@ Function InstallPowerShellV2 {
 # Install Linux Subsystem - Applicable since Win10 1607 and Server 1709
 # For automated Linux distribution installation, see https://docs.microsoft.com/en-us/windows/wsl/install-on-server
 Function InstallLinuxSubsystem {
-	Write-Output "Installing Linux Subsystem..."
+	Write-Output "Установка подсистемы Linux..."
 	If ([System.Environment]::OSVersion.Version.Build -eq 14393) {
 		# 1607 needs developer mode to be enabled
 		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense" -Type DWord -Value 1
@@ -3178,7 +3178,7 @@ Function InstallLinuxSubsystem {
 
 # Uninstall Linux Subsystem - Applicable since Win10 1607 and Server 1709
 Function UninstallLinuxSubsystem {
-	Write-Output "Uninstalling Linux Subsystem..."
+	Write-Output "Удаление подсистемы Linux..."
 	If ([System.Environment]::OSVersion.Version.Build -eq 14393) {
 		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowDevelopmentWithoutDevLicense" -Type DWord -Value 0
 		Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock" -Name "AllowAllTrustedApps" -Type DWord -Value 0
@@ -3188,7 +3188,7 @@ Function UninstallLinuxSubsystem {
 
 # Install Hyper-V - Not applicable to Home
 Function InstallHyperV {
-	Write-Output "Installing Hyper-V..."
+	Write-Output "Установка системы виртуализации Hyper-V..."
 	If ((Get-CimInstance -Class "Win32_OperatingSystem").ProductType -eq 1) {
 		Enable-WindowsOptionalFeature -Online -FeatureName "Microsoft-Hyper-V-All" -NoRestart -WarningAction SilentlyContinue | Out-Null
 	} Else {
@@ -3198,7 +3198,7 @@ Function InstallHyperV {
 
 # Uninstall Hyper-V - Not applicable to Home
 Function UninstallHyperV {
-	Write-Output "Uninstalling Hyper-V..."
+	Write-Output "Удаление системы виртуализации Hyper-V..."
 	If ((Get-CimInstance -Class "Win32_OperatingSystem").ProductType -eq 1) {
 		Disable-WindowsOptionalFeature -Online -FeatureName "Microsoft-Hyper-V-All" -NoRestart -WarningAction SilentlyContinue | Out-Null
 	} Else {
@@ -3208,7 +3208,7 @@ Function UninstallHyperV {
 
 # Install .NET Framework 2.0, 3.0 and 3.5 runtimes - Requires internet connection
 Function InstallNET23 {
-	Write-Output "Installing .NET Framework 2.0, 3.0 and 3.5 runtimes..."
+	Write-Output "Установка среды выполнения .NET Framework 2.0, 3.0 и 3.5..."
 	If ((Get-CimInstance -Class "Win32_OperatingSystem").ProductType -eq 1) {
 		Enable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -NoRestart -WarningAction SilentlyContinue | Out-Null
 	} Else {
@@ -3218,7 +3218,7 @@ Function InstallNET23 {
 
 # Uninstall .NET Framework 2.0, 3.0 and 3.5 runtimes
 Function UninstallNET23 {
-	Write-Output "Uninstalling .NET Framework 2.0, 3.0 and 3.5 runtimes..."
+	Write-Output "Удаление среды выполнения .NET Framework 2.0, 3.0 и 3.5..."
 	If ((Get-CimInstance -Class "Win32_OperatingSystem").ProductType -eq 1) {
 		Disable-WindowsOptionalFeature -Online -FeatureName "NetFx3" -NoRestart -WarningAction SilentlyContinue | Out-Null
 	} Else {
@@ -3228,7 +3228,7 @@ Function UninstallNET23 {
 
 # Set Photo Viewer association for bmp, gif, jpg, png and tif
 Function SetPhotoViewerAssociation {
-	Write-Output "Setting Photo Viewer association for bmp, gif, jpg, png and tif..."
+	Write-Output "Установка ассоциаций Средства просмотра фотографий для BMP, GIF, JPG, PNG и TIF..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
 	}
@@ -3242,7 +3242,7 @@ Function SetPhotoViewerAssociation {
 
 # Unset Photo Viewer association for bmp, gif, jpg, png and tif
 Function UnsetPhotoViewerAssociation {
-	Write-Output "Unsetting Photo Viewer association for bmp, gif, jpg, png and tif..."
+	Write-Output "Отключение ассоциаций Средства просмотра фотографий для BMP, GIF, JPG, PNG и TIF..."
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
 	}
@@ -3257,7 +3257,7 @@ Function UnsetPhotoViewerAssociation {
 
 # Add Photo Viewer to 'Open with...'
 Function AddPhotoViewerOpenWith {
-	Write-Output "Adding Photo Viewer to 'Open with...'"
+	Write-Output "Добавление Средства просмотра фотографий из 'Открыть с помощью ...'"
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
 	}
@@ -3270,7 +3270,7 @@ Function AddPhotoViewerOpenWith {
 
 # Remove Photo Viewer from 'Open with...'
 Function RemovePhotoViewerOpenWith {
-	Write-Output "Removing Photo Viewer from 'Open with...'"
+	Write-Output "Удаление Средства просмотра фотографий из 'Открыть с помощью ...'"
 	If (!(Test-Path "HKCR:")) {
 		New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
 	}
@@ -3279,49 +3279,49 @@ Function RemovePhotoViewerOpenWith {
 
 # Uninstall Microsoft Print to PDF
 Function UninstallPDFPrinter {
-	Write-Output "Uninstalling Microsoft Print to PDF..."
+	Write-Output "Удаление Microsoft Print to PDF..."
 	Disable-WindowsOptionalFeature -Online -FeatureName "Printing-PrintToPDFServices-Features" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Install Microsoft Print to PDF
 Function InstallPDFPrinter {
-	Write-Output "Installing Microsoft Print to PDF..."
+	Write-Output "Установка Microsoft Print to PDF..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "Printing-PrintToPDFServices-Features" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Uninstall Microsoft XPS Document Writer
 Function UninstallXPSPrinter {
-	Write-Output "Uninstalling Microsoft XPS Document Writer..."
+	Write-Output "Удаление Microsoft XPS Document Writer..."
 	Disable-WindowsOptionalFeature -Online -FeatureName "Printing-XPSServices-Features" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Install Microsoft XPS Document Writer
 Function InstallXPSPrinter {
-	Write-Output "Installing Microsoft XPS Document Writer..."
+	Write-Output "Установка Microsoft XPS Document Writer..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "Printing-XPSServices-Features" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Remove Default Fax Printer
 Function RemoveFaxPrinter {
-	Write-Output "Removing Default Fax Printer..."
+	Write-Output "Удаление стандартного факсового принтера..."
 	Remove-Printer -Name "Fax" -ErrorAction SilentlyContinue
 }
 
 # Add Default Fax Printer
 Function AddFaxPrinter {
-	Write-Output "Adding Default Fax Printer..."
+	Write-Output "Добавление стандартного факсового принтера..."
 	Add-Printer -Name "Fax" -DriverName "Microsoft Shared Fax Driver" -PortName "SHRFAX:" -ErrorAction SilentlyContinue
 }
 
 # Uninstall Windows Fax and Scan Services - Not applicable to Server
 Function UninstallFaxAndScan {
-	Write-Output "Uninstalling Windows Fax and Scan Services..."
+	Write-Output "Удаление служб факсов и сканеров..."
 	Disable-WindowsOptionalFeature -Online -FeatureName "FaxServicesClientPackage" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
 # Install Windows Fax and Scan Services - Not applicable to Server
 Function InstallFaxAndScan {
-	Write-Output "Installing Windows Fax and Scan Services..."
+	Write-Output "Установка служб факсов и сканеров..."
 	Enable-WindowsOptionalFeature -Online -FeatureName "FaxServicesClientPackage" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
@@ -3339,19 +3339,19 @@ Function EnableDirectPlay {
 
 # Set IE Start Page to badbrowser page
 Function SetIEStartPageToBadBrowser {
-	Write-Output "Setting IE Start Page to badbrowser page..."
+	Write-Output "Изменение стартовой страницы Internet Explorer на страницу выбора браузера..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "https://dpteam.github.io/badbrowser/"
 }
 
 # Set IE Start Page to about:blank
 Function SetIEStartPageToAboutBlank {
-	Write-Output "Setting IE Start Page to blank page..."
+	Write-Output "Изменение стартовой страницы Internet Explorer на пустую страницу..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "about:blank"
 }
 
 # Set IE Start Page to about:Tabs
 Function SetIEStartPageToAboutTabs {
-	Write-Output "Setting IE Start Page to tabs page..."
+	Write-Output "Изменение стартовой страницы Internet Explorer на выбор вкладок..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "about:Tabs"
 }
 
@@ -3367,7 +3367,7 @@ Function SetIEStartPageToAboutTabs {
 
 # Hide Server Manager after login
 Function HideServerManagerOnLogin {
-	Write-Output "Hiding Server Manager after login..."
+	Write-Output "Скрытие диспетчера сервера после входа в систему..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager" -Force | Out-Null
 	}
@@ -3376,13 +3376,13 @@ Function HideServerManagerOnLogin {
 
 # Show Server Manager after login
 Function ShowServerManagerOnLogin {
-	Write-Output "Showing Server Manager after login..."
+	Write-Output "Раскрытие диспетчера сервера после входа в систему..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Server\ServerManager" -Name "DoNotOpenAtLogon" -ErrorAction SilentlyContinue
 }
 
 # Disable Shutdown Event Tracker
 Function DisableShutdownTracker {
-	Write-Output "Отключение Shutdown Event Tracker..."
+	Write-Output "Отключение отслеживания событий завершения работы..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability")) {
 		New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability" -Force | Out-Null
 	}
@@ -3391,13 +3391,13 @@ Function DisableShutdownTracker {
 
 # Enable Shutdown Event Tracker
 Function EnableShutdownTracker {
-	Write-Output "Включение Shutdown Event Tracker..."
+	Write-Output "Включение отслеживания событий завершения работы..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Reliability" -Name "ShutdownReasonOn" -ErrorAction SilentlyContinue
 }
 
 # Disable password complexity and maximum age requirements
 Function DisablePasswordPolicy {
-	Write-Output "Отключение password complexity and maximum age requirements..."
+	Write-Output "Отключение сложности и времени действия пароля..."
 	$tmpfile = New-TemporaryFile
 	secedit /export /cfg $tmpfile /quiet
 	(Get-Content $tmpfile).Replace("PasswordComplexity = 1", "PasswordComplexity = 0").Replace("MaximumPasswordAge = 42", "MaximumPasswordAge = -1") | Out-File $tmpfile
@@ -3407,7 +3407,7 @@ Function DisablePasswordPolicy {
 
 # Enable password complexity and maximum age requirements
 Function EnablePasswordPolicy {
-	Write-Output "Включение password complexity and maximum age requirements..."
+	Write-Output "Включение сложности и времени действия пароля..."
 	$tmpfile = New-TemporaryFile
 	secedit /export /cfg $tmpfile /quiet
 	(Get-Content $tmpfile).Replace("PasswordComplexity = 0", "PasswordComplexity = 1").Replace("MaximumPasswordAge = -1", "MaximumPasswordAge = 42") | Out-File $tmpfile
@@ -3417,26 +3417,26 @@ Function EnablePasswordPolicy {
 
 # Disable Ctrl+Alt+Del requirement before login
 Function DisableCtrlAltDelLogin {
-	Write-Output "Отключение Ctrl+Alt+Del requirement before login..."
+	Write-Output "Отключение требования нажатия Ctrl+Alt+Del перед входом..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Type DWord -Value 1
 }
 
 # Enable Ctrl+Alt+Del requirement before login
 Function EnableCtrlAltDelLogin {
-	Write-Output "Включение Ctrl+Alt+Del requirement before login..."
+	Write-Output "Включение требования нажатия Ctrl+Alt+Del перед входом..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "DisableCAD" -Type DWord -Value 0
 }
 
 # Disable Internet Explorer Enhanced Security Configuration (IE ESC)
 Function DisableIEEnhancedSecurity {
-	Write-Output "Отключение Internet Explorer Enhanced Security Configuration (IE ESC)..."
+	Write-Output "Отключение конфигурации усиленной безопасности Internet Explorer (IE ESC)..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 0
 }
 
 # Enable Internet Explorer Enhanced Security Configuration (IE ESC)
 Function EnableIEEnhancedSecurity {
-	Write-Output "Включение Internet Explorer Enhanced Security Configuration (IE ESC)..."
+	Write-Output "Включение конфигурации усиленной безопасности Internet Explorer (IE ESC)..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 1
 }
@@ -3467,7 +3467,7 @@ Function DisableAudio {
 
 # Unpin all Start Menu tiles - Note: This function has no counterpart. You have to pin the tiles back manually.
 Function UnpinStartMenuTiles {
-	Write-Output "Unpinning all Start Menu tiles..."
+	Write-Output "Открепление всех плиток в меню Пуск..."
 	If ([System.Environment]::OSVersion.Version.Build -ge 15063 -And [System.Environment]::OSVersion.Version.Build -le 16299) {
 		Get-ChildItem -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\CloudStore\Store\Cache\DefaultAccount" -Include "*.group" -Recurse | ForEach-Object {
 			$data = (Get-ItemProperty -Path "$($_.PsPath)\Current" -Name "Data").Data -Join ","
@@ -3484,7 +3484,7 @@ Function UnpinStartMenuTiles {
 
 # Unpin all Taskbar icons - Note: This function has no counterpart. You have to pin the icons back manually.
 Function UnpinTaskbarIcons {
-	Write-Output "Unpinning all Taskbar icons..."
+	Write-Output "Открепление всех значков на панели задач..."
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband" -Name "Favorites" -Type Binary -Value ([byte[]](255))
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Taskband" -Name "FavoritesResolve" -ErrorAction SilentlyContinue
 }

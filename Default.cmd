@@ -2,7 +2,7 @@
 title AwesomeDPT-WindowsOptima Kernel Initialization...
 :predefines
 SetLocal EnableExtensions EnableDelayedExpansion
-chcp 1251
+chcp 65001
 color 0B
 cls
 title AwesomeDPT-WindowsOptima

@@ -925,7 +925,7 @@ Function DisableDotNetStrongCrypto {
 # As of March 2018, the compatibility check has been lifted for security updates.
 # See https://support.microsoft.com/en-us/help/4072699/windows-security-updates-and-antivirus-software for details
 Function EnableMeltdownCompatFlag {
-	Write-Output "Включение флага совместимости Meltdown (CVE-2017-5754)..."
+	Write-Output "Включение флага совместимости Meltdown [CVE-2017-5754]..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\QualityCompat")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\QualityCompat" | Out-Null
 	}
@@ -934,7 +934,7 @@ Function EnableMeltdownCompatFlag {
 
 # Disable Meltdown (CVE-2017-5754) compatibility flag
 Function DisableMeltdownCompatFlag {
-	Write-Output "Отключение флага совместимости Meltdown (CVE-2017-5754)..."
+	Write-Output "Отключение флага совместимости Meltdown [CVE-2017-5754]..."
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\QualityCompat" -Name "cadca5fe-87d3-4b96-b7fb-a231484277cc" -ErrorAction SilentlyContinue
 }
 
@@ -1398,6 +1398,40 @@ Function EnableLongPaths {
 Function DisableLongPaths {
 	Write-Output "Отключение длинных путей..."
 	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" -Name "LongPathsEnabled" -Type DWord -Value 0
+}
+
+# Stop Mobile Hotspot
+Function StopMobileHotspot {
+	Write-Output "Отключение мобильного хот-спота..."
+
+	$connectionProfile = [Windows.Networking.Connectivity.NetworkInformation,Windows.Networking.Connectivity,ContentType=WindowsRuntime]::GetInternetConnectionProfile()
+	$tetheringManager = [Windows.Networking.NetworkOperators.NetworkOperatorTetheringManager,Windows.Networking.NetworkOperators,ContentType=WindowsRuntime]::CreateFromConnectionProfile($connectionProfile)
+	
+	# Be sure to include Ben N.'s await for IAsyncOperation:
+	# https://superuser.com/questions/1341997/using-a-uwp-api-namespace-in-powershell
+
+	# Check whether Mobile Hotspot is enabled
+	$tetheringManager.TetheringOperationalState
+
+	# Stop Mobile Hotspot
+	Await ($tetheringManager.StopTetheringAsync()) ([Windows.Networking.NetworkOperators.NetworkOperatorTetheringOperationResult])
+}
+
+# Start Mobile Hotspot
+Function StartMobileHotspot {
+	Write-Output "Включение мобильного хот-спота..."
+	
+	$connectionProfile = [Windows.Networking.Connectivity.NetworkInformation,Windows.Networking.Connectivity,ContentType=WindowsRuntime]::GetInternetConnectionProfile()
+	$tetheringManager = [Windows.Networking.NetworkOperators.NetworkOperatorTetheringManager,Windows.Networking.NetworkOperators,ContentType=WindowsRuntime]::CreateFromConnectionProfile($connectionProfile)
+	
+	# Be sure to include Ben N.'s await for IAsyncOperation:
+	# https://superuser.com/questions/1341997/using-a-uwp-api-namespace-in-powershell
+
+	# Check whether Mobile Hotspot is enabled
+	$tetheringManager.TetheringOperationalState
+
+	# Start Mobile Hotspot
+	Await ($tetheringManager.StartTetheringAsync()) ([Windows.Networking.NetworkOperators.NetworkOperatorTetheringOperationResult])
 }
 
 ##########
@@ -3429,14 +3463,14 @@ Function EnableCtrlAltDelLogin {
 
 # Disable Internet Explorer Enhanced Security Configuration (IE ESC)
 Function DisableIEEnhancedSecurity {
-	Write-Output "Отключение конфигурации усиленной безопасности Internet Explorer (IE ESC)..."
+	Write-Output "Отключение конфигурации усиленной безопасности Internet Explorer [IE ESC]..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 0
 }
 
 # Enable Internet Explorer Enhanced Security Configuration (IE ESC)
 Function EnableIEEnhancedSecurity {
-	Write-Output "Включение конфигурации усиленной безопасности Internet Explorer (IE ESC)..."
+	Write-Output "Включение конфигурации усиленной безопасности Internet Explorer [IE ESC]..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}" -Name "IsInstalled" -Type DWord -Value 1
 }

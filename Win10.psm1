@@ -5,7 +5,7 @@
 # Original Source: https://github.com/Disassembler0/Win10-Initial-Setup-Script
 # DPT Fork: https://github.com/DartPower/Win10-Initial-Setup-Script-DPTEdition
 ##########
-
+[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 ##########
 #region Privacy Tweaks
 ##########
@@ -16,7 +16,7 @@
 # In such case, enable telemetry, run Windows update and then disable telemetry again.
 # See also https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/57 and https://github.com/Disassembler0/Win10-Initial-Setup-Script/issues/92
 Function DisableTelemetry {
-	Write-Output "Отключение основных функций слежки [Телеметрии]..."
+	Write-Output "Disabling Telemetry..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 0
@@ -59,7 +59,7 @@ Function DisableTelemetry {
 
 # Enable Telemetry
 Function EnableTelemetry {
-	Write-Output "Включение основных функций слежки [Телеметрии]..."
+	Write-Output "Enabling Telemetry..."
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
 	Set-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Policies\DataCollection" -Name "AllowTelemetry" -Type DWord -Value 3
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection" -Name "AllowTelemetry" -ErrorAction SilentlyContinue
@@ -81,7 +81,7 @@ Function EnableTelemetry {
 
 # Disable Wi-Fi Sense
 Function DisableWiFiSense {
-	Write-Output "Отключение технологии Wi-Fi Sense..."
+	Write-Output "Disabling Wi-Fi Sense..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
 	}
@@ -99,7 +99,7 @@ Function DisableWiFiSense {
 
 # Enable Wi-Fi Sense
 Function EnableWiFiSense {
-	Write-Output "Включение технологии Wi-Fi Sense..."
+	Write-Output "Enabling Wi-Fi Sense..."
 	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
 		New-Item -Path "HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
 	}

@@ -5,7 +5,7 @@
 # Original Source: https://github.com/Disassembler0/Win10-Initial-Setup-Script
 # DPT Fork: https://github.com/DartPower/Win10-Initial-Setup-Script-DPTEdition
 ##########
-
+[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 # Relaunch the script with administrator privileges
 Function RequireAdmin {
 	If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {

@@ -1,3 +1,11 @@
+# <img src="https://raw.githubusercontent.com/dpteam/AwesomeDPT-WindowsSoft/master/content/logo.png?raw=true" width="400">
+
+💻 PowerShell script for automation of routine tasks done after fresh installations of Windows 10, Server 2016 & 2019
+
+## Ссылки
+
+- [AwesomeDPT-Windows](https://dpteam.github.io/AwesomeDPT-Windows) - Вернуться в основной список.
+
 ## Contents
  - [Description](#description)
  - [Usage](#usage)

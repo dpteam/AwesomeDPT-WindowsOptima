@@ -3484,6 +3484,36 @@ Function InstallFaxAndScan {
 	Enable-WindowsOptionalFeature -Online -FeatureName "FaxServicesClientPackage" -NoRestart -WarningAction SilentlyContinue | Out-Null
 }
 
+# Disable DirectPlay
+Function DisableDirectPlay {
+	Write-Output "Disabling DirectPlay..."
+	Disable-WindowsOptionalFeature -Online -FeatureName "DirectPlay"
+}
+
+# Enable DirectPlay
+Function EnableDirectPlay {
+	Write-Output "Enabling DirectPlay..."
+	Enable-WindowsOptionalFeature -Online -FeatureName "DirectPlay" -All
+}
+
+# Set IE Start Page to badbrowser page
+Function SetIEStartPageToBadBrowser {
+	Write-Output "Changing Internet Explorer Start Page to Browser Selection Page..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "https://dpteam.github.io/badbrowser/"
+}
+
+# Set IE Start Page to about:blank
+Function SetIEStartPageToAboutBlank {
+	Write-Output "Changing Internet Explorer Start Page to about:blank.."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "about:blank"
+}
+
+# Set IE Start Page to about:Tabs
+Function SetIEStartPageToAboutTabs {
+	Write-Output "Changing Internet Explorer Start Page to about:Tabs..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Internet Explorer\Main" -Name "Start Page" -Type String -Value "about:Tabs"
+}
+
 ##########
 #endregion Application Tweaks
 ##########

@@ -213,6 +213,8 @@ AddPhotoViewerOpenWith          # RemovePhotoViewerOpenWith
 UninstallXPSPrinter             # InstallXPSPrinter
 RemoveFaxPrinter                # AddFaxPrinter
 # UninstallFaxAndScan           # InstallFaxAndScan
+EnableDirectPlay				# DisableDirectPlay
+SetIEStartPageToBadBrowser		# SetIEStartPageToAboutBlank     # SetIEStartPageToAboutTabs
 
 ### Server Specific Tweaks ###
 # HideServerManagerOnLogin      # ShowServerManagerOnLogin

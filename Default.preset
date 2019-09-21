@@ -13,7 +13,7 @@ RequireAdmin
 DisableTelemetry                # EnableTelemetry
 DisableWiFiSense                # EnableWiFiSense
 # DisableSmartScreen            # EnableSmartScreen
-# DisableWebSearch              # EnableWebSearch
+DisableWebSearch                # EnableWebSearch
 DisableAppSuggestions           # EnableAppSuggestions
 DisableActivityHistory          # EnableActivityHistory
 DisableBackgroundApps           # EnableBackgroundApps
@@ -186,8 +186,6 @@ Hide3DObjectsFromThisPC         # Show3DObjectsInThisPC
 # DisableThumbnails             # EnableThumbnails
 DisableThumbnailCache           # EnableThumbnailCache
 DisableThumbsDBOnNetwork        # EnableThumbsDBOnNetwork
-#EnableFullPathTitleBar         # DisableFullPathTitleBar
-#EnableClipboardHistory			# DisableClipboardHistory
 
 ### Application Tweaks ###
 DisableOneDrive                 # EnableOneDrive
@@ -196,8 +194,8 @@ UninstallMsftBloat              # InstallMsftBloat
 UninstallThirdPartyBloat        # InstallThirdPartyBloat
 # UninstallWindowsStore         # InstallWindowsStore
 DisableXboxFeatures             # EnableXboxFeatures
-# DisableFullscreenOptims       # EnableFullscreenOptims
-DisableAdobeFlash               # EnableAdobeFlash
+DisableFullscreenOptims         # EnableFullscreenOptims
+EnableAdobeFlash				# DisableAdobeFlash
 DisableEdgePreload              # EnableEdgePreload
 DisableEdgeShortcutCreation     # EnableEdgeShortcutCreation
 DisableIEFirstRun               # EnableIEFirstRun
@@ -220,12 +218,12 @@ EnableDirectPlay				# DisableDirectPlay
 SetIEStartPageToBadBrowser		# SetIEStartPageToAboutBlank     # SetIEStartPageToAboutTabs
 
 ### Server Specific Tweaks ###
-# HideServerManagerOnLogin      # ShowServerManagerOnLogin
-# DisableShutdownTracker        # EnableShutdownTracker
-# DisablePasswordPolicy         # EnablePasswordPolicy
-# DisableCtrlAltDelLogin        # EnableCtrlAltDelLogin
-# DisableIEEnhancedSecurity     # EnableIEEnhancedSecurity
-# EnableAudio                   # DisableAudio
+HideServerManagerOnLogin        # ShowServerManagerOnLogin
+DisableShutdownTracker          # EnableShutdownTracker
+DisablePasswordPolicy           # EnablePasswordPolicy
+DisableCtrlAltDelLogin          # EnableCtrlAltDelLogin
+DisableIEEnhancedSecurity       # EnableIEEnhancedSecurity
+EnableAudio                     # DisableAudio
 
 ### Unpinning ###
 # UnpinStartMenuTiles

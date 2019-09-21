@@ -2833,30 +2833,6 @@ Function EnableThumbsDBOnNetwork {
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisableThumbsDBOnNetworkFolders" -ErrorAction SilentlyContinue
 }
 
-# Enable the full path in the title bar
-Function EnableFullPathTitleBar {
-	Write-Output "Enabling the full path in the title bar..."
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 1
-}
-
-# Disable the full path in the title bar
-Function DisableFullPathTitleBar {
-	Write-Output "Disabling the full path in the title bar..."
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
-}
-
-# Enable Clipboard History
-Function EnableClipboardHistory {
-	Write-Output "Enabling Clipboard History..."
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1
-}
-
-# Disable Clipboard History
-Function DisableClipboardHistory {
-	Write-Output "Disabling Clipboard History..."
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 0
-}
-
 ##########
 #endregion Explorer UI Tweaks
 ##########

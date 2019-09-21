@@ -19,6 +19,7 @@ DisableActivityHistory          # EnableActivityHistory
 DisableBackgroundApps           # EnableBackgroundApps
 # DisableSensors                # EnableSensors
 DisableLocation                 # EnableLocation
+DisableLocationTracking         # EnableLocationTracking
 DisableMapUpdates               # EnableMapUpdates
 DisableFeedback                 # EnableFeedback
 DisableTailoredExperiences      # EnableTailoredExperiences
@@ -185,6 +186,8 @@ Hide3DObjectsFromThisPC         # Show3DObjectsInThisPC
 # DisableThumbnails             # EnableThumbnails
 DisableThumbnailCache           # EnableThumbnailCache
 DisableThumbsDBOnNetwork        # EnableThumbsDBOnNetwork
+#EnableFullPathTitleBar         # DisableFullPathTitleBar
+#EnableClipboardHistory			# DisableClipboardHistory
 
 ### Application Tweaks ###
 DisableOneDrive                 # EnableOneDrive

@@ -271,6 +271,28 @@ Function EnableLocation {
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors" -Name "DisableLocationScripting" -ErrorAction SilentlyContinue
 }
 
+# Disable Location Tracking
+Function DisableLocationTracking {
+	Write-Output "Disabling Location Tracking..."	
+	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location")) {	
+		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Force | Out-Null	
+	}	
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Name "Value" -Type String -Value "Deny"	
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" -Name "SensorPermissionState" -Type DWord -Value 0	
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" -Name "Status" -Type DWord -Value 0	
+}	
+
+# Enable Location Tracking	
+Function EnableLocationTracking {	
+	Write-Output "Enabling Location Tracking..."
+	If (!(Test-Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location")) {	
+		New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Force | Out-Null	
+	}	
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location" -Name "Value" -Type String -Value "Allow"	
+	Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Sensor\Overrides\{BFA794E4-F964-4FDB-90F6-51056BFE4B44}" -Name "SensorPermissionState" -Type DWord -Value 1	
+	Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\lfsvc\Service\Configuration" -Name "Status" -Type DWord -Value 1	
+}	
+
 # Disable automatic Maps updates
 Function DisableMapUpdates {
 	Write-Output "Disabling automatic Maps updates..."
@@ -1934,12 +1956,12 @@ Function ShowShortcutArrow {
 # Adjusts visual effects for performance - Disables animations, transparency etc. but leaves font smoothing and miniatures enabled
 Function SetVisualFXPerformance {
 	Write-Output "Adjusting visual effects for performance..."
-	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "DragFullWindows" -Type String -Value 0
+	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "DragFullWindows" -Type String -Value 1
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "MenuShowDelay" -Type String -Value 0
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name "UserPreferencesMask" -Type Binary -Value ([byte[]](144,18,3,128,16,0,0,0))
 	Set-ItemProperty -Path "HKCU:\Control Panel\Desktop\WindowMetrics" -Name "MinAnimate" -Type String -Value 0
 	Set-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name "KeyboardDelay" -Type DWord -Value 0
-	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewAlphaSelect" -Type DWord -Value 0
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewAlphaSelect" -Type DWord -Value 1
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "ListviewShadow" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "TaskbarAnimations" -Type DWord -Value 0
 	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Type DWord -Value 3
@@ -2811,6 +2833,30 @@ Function EnableThumbsDBOnNetwork {
 	Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name "DisableThumbsDBOnNetworkFolders" -ErrorAction SilentlyContinue
 }
 
+# Enable the full path in the title bar
+Function EnableFullPathTitleBar {
+	Write-Output "Enabling the full path in the title bar..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 1
+}
+
+# Disable the full path in the title bar
+Function DisableFullPathTitleBar {
+	Write-Output "Disabling the full path in the title bar..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\CabinetState" -Name "FullPath" -Type DWord -Value 0
+}
+
+# Enable Clipboard History
+Function EnableClipboardHistory {
+	Write-Output "Enabling Clipboard History..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 1
+}
+
+# Disable Clipboard History
+Function DisableClipboardHistory {
+	Write-Output "Disabling Clipboard History..."
+	Set-ItemProperty -Path "HKCU:\Software\Microsoft\Clipboard" -Name "EnableClipboardHistory" -Type DWord -Value 0
+}
+
 ##########
 #endregion Explorer UI Tweaks
 ##########
@@ -2845,7 +2891,9 @@ Function UninstallOneDrive {
 	If (!(Test-Path $onedrive)) {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
 	}
-	Start-Process $onedrive "/uninstall" -NoNewWindow -Wait
+	if([System.IO.File]::Exists($onedrive)){
+		Start-Process -FilePath $onedrive -ArgumentList "/uninstall" -NoNewWindow -Wait
+	}
 	Start-Sleep -s 2
 	Stop-Process -Name "explorer" -Force -ErrorAction SilentlyContinue
 	Start-Sleep -s 2
@@ -2869,7 +2917,7 @@ Function InstallOneDrive {
 	If (!(Test-Path $onedrive)) {
 		$onedrive = "$env:SYSTEMROOT\System32\OneDriveSetup.exe"
 	}
-	Start-Process $onedrive -NoNewWindow
+	Start-Process -FilePath $onedrive -NoNewWindow
 }
 
 # Uninstall default Microsoft applications

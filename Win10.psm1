@@ -1,10 +1,11 @@
 ##########
-# Win 10 / Server 2016 / Server 2019 Initial Setup Script - Tweak library
-# Author: Disassembler <disassembler@dasm.cz>
-# Version: v3.8, 2019-09-11
-# Source: https://github.com/Disassembler0/Win10-Initial-Setup-Script
+# Win 10 / Server 2016 / Server 2019 Initial Setup Script - Default preset with DPT subsettings
+# Authors: Disassembler <disassembler@dasm.cz> / DartPower <dpteam.github.io/site>
+# Version: v3.8.0-DPT, 21.09.2019
+# Original Source: https://github.com/Disassembler0/Win10-Initial-Setup-Script
+# DPT Fork: https://github.com/DartPower/Win10-Initial-Setup-Script-DPTEdition
 ##########
-
+[System.Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 ##########
 #region Privacy Tweaks
 ##########
